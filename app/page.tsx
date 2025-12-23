@@ -5,8 +5,8 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-gray-100 p-10">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-extrabold text-gray-800 mb-10 text-center">
-          Tech Blog
+        <h1 className="text-2xl font-extrabold text-gray-800 mb-10 text-center">
+          新着記事
           <span className="block text-base font-normal text-gray-500 mt-2">
             Next.jsとTailwind CSSの学習デモ
           </span>
