@@ -1,21 +1,18 @@
-import { Post } from "../../types";
+import { posts } from "../../blogData";
 import LikeButton from "../../components/LikeButton";
+import { notFound } from "next/navigation";
 
-// 詳細データを取得する関数
-async function getPost(id: string): Promise<Post> {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
-  return res.json();
+function getPost(id: string) {
+  return posts.find((post) => post.id === id);
 }
 
-// Propsの型定義
-type Props = {
-  params: { id: string };
-};
-
 export default async function PostDetail({ params }: { params: Promise<{ id: string }> }) {
-  // paramsをawaitで解決
   const { id } = await params;
-  const post = await getPost(id);
+  const post = getPost(id);
+
+  if (!post) {
+    notFound();
+  }
 
   return (
     <main className="min-h-screen bg-gray-50 py-10 px-4">
@@ -29,7 +26,7 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
             {post.title}
           </h1>
 
-          <div className="text-gray-700 text-lg leading-loose border-t border-gray-100 pt-6">
+          <div className="text-gray-700 text-lg leading-loose border-t border-gray-100 pt-6 whitespace-pre-wrap">
             <p>{post.body}</p>
             <p className="mt-4"></p>
           </div>

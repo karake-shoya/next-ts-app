@@ -1,7 +1,7 @@
 // 記事データの型定義
 export type Post = {
-  userId: number;
-  id: number;
+  id: string;
   title: string;
   body: string;
+  date: string;
 };

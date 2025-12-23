@@ -1,17 +1,7 @@
 import Link from "next/link";
-import { Post } from "./types";
-
-async function getPosts(): Promise<Post[]> {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-  if(!res.ok) {
-    throw new Error("failed to fetch data");
-  }
-  return res.json();
-}
+import { posts } from "./blogData";
 
 export default async function Home() {
-  const posts = await getPosts();
-
   return (
     <main className="min-h-screen bg-gray-100 p-10">
       <div className="max-w-6xl mx-auto">
