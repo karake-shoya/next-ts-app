@@ -8,24 +8,17 @@ export default async function Home() {
         <h1 className="text-2xl font-extrabold text-gray-800 mb-10 text-center">
           新着記事
           <span className="block text-base font-normal text-gray-500 mt-2">
-            Next.jsとTailwind CSSの学習デモ
+            Next.jsとTypeScriptの学習デモ
           </span>
         </h1>
-        <div className="grid gird-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.slice(0, 12).map((post) => (
-            <Link
-              href={`/posts/${post.id}`}
-              key={post.id}
-              className="block group"
-            >
+            <Link href={`/posts/${post.id}`} key={post.id} className="block group">
               <div className="bg-white h-full p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
                 <div className="mb-4">
-                  <h2 className="text-xl font-bold text-gray-800 group-hover::text-blue-600 transition-colors line-clamp-2">
-                    {post.title}
-                  </h2>
+                  <h2 className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">{post.title}</h2>
                 </div>
-
-                <p className="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow">
+                <p className="text-gray-600 text-sm line-clamp-3 mb-4 grow">
                   {post.body}
                 </p>
 
