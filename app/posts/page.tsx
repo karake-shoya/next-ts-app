@@ -1,49 +1,27 @@
 import Link from "next/link";
-import { posts } from "./blogData";
+import { posts } from "../blogData";
 
-export default async function Home() {
+export default function PostsPage() {
   return (
     <main className="min-h-screen px-6 py-12">
       <div className="max-w-6xl mx-auto">
-        {/* Hero Section */}
-        <section className="text-center mb-16 animate-fade-in-up">
+        {/* Header */}
+        <section className="text-center mb-12 animate-fade-in-up">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-text-muted mb-6">
-            <span className="w-2 h-2 rounded-full bg-accent-tertiary animate-pulse" />
-            Next.js × TypeScript で学ぶモダン開発
+            <span className="w-2 h-2 rounded-full bg-accent-primary animate-pulse" />
+            All Articles
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
-            <span className="gradient-text">最新テック情報を</span>
-            <br />
-            <span className="text-foreground">わかりやすく発信</span>
+          <h1 className="text-4xl md:text-5xl font-black mb-4">
+            <span className="gradient-text">すべての記事</span>
           </h1>
-          <p className="text-text-muted text-lg max-w-2xl mx-auto leading-relaxed">
-            モダンな技術トレンドと実践的な学習記録をお届けします。
+          <p className="text-text-muted">
+            全 <span className="text-accent-primary font-bold">{posts.length}</span> 件の記事
           </p>
         </section>
 
-        {/* Stats */}
-        <section className="grid grid-cols-3 gap-4 max-w-md mx-auto mb-16 animate-fade-in-up stagger-1" style={{ opacity: 0 }}>
-          {[
-            { value: posts.length, label: "記事" },
-            { value: "10+", label: "技術" },
-            { value: "∞", label: "学び" },
-          ].map((stat, i) => (
-            <div key={i} className="glass rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold gradient-text">{stat.value}</div>
-              <div className="text-xs text-text-muted mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </section>
-
-        {/* Section Header */}
-        <div className="flex items-center gap-4 mb-8 animate-fade-in-up stagger-2" style={{ opacity: 0 }}>
-          <h2 className="text-2xl font-bold text-foreground">新着記事</h2>
-          <div className="flex-1 h-px bg-gradient-to-r from-accent-primary/50 to-transparent" />
-        </div>
-
         {/* Posts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.slice(0, 12).map((post, index) => (
+          {posts.map((post, index) => (
             <Link 
               href={`/posts/${post.id}`} 
               key={post.id} 
@@ -90,18 +68,25 @@ export default async function Home() {
           ))}
         </div>
 
-        {/* View All Link */}
-        {posts.length > 12 && (
-          <div className="text-center mt-12">
-            <Link 
-              href="/posts"
-              className="inline-block glass glass-hover px-8 py-3 rounded-full text-sm font-medium text-foreground transition-all duration-300 hover:scale-105"
+        {/* Back to Home */}
+        <div className="text-center mt-12">
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-2 glass glass-hover px-6 py-3 rounded-full text-sm font-medium text-text-muted hover:text-foreground transition-all duration-300"
+          >
+            <svg 
+              className="w-4 h-4" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
             >
-              すべての記事を見る →
-            </Link>
-          </div>
-        )}
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+            </svg>
+            ホームに戻る
+          </Link>
+        </div>
       </div>
     </main>
   );
 }
+
