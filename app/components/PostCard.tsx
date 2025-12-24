@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { formatDate } from "@/libs/utils";
-import { Post } from "../types";
-import { ArrowRightIcon } from "./icons";
+import { Post } from "@/app/types";
+import { ArrowRightIcon } from "@/app/components/icons";
 
 type Props = {
   post: Post;

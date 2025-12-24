@@ -1,27 +1,28 @@
 import Link from "next/link";
 import { client } from "@/libs/client";
-import { Post } from "../types";
-import PostCard from "../components/PostCard";
-import { ArrowLeftIcon } from "../components/icons";
+import { POSTS_FETCH_LIMIT } from "@/libs/constants";
+import { Post } from "@/app/types";
+import PostCard from "@/app/components/PostCard";
+import { ArrowLeftIcon } from "@/app/components/icons";
 
 export const revalidate = false;
 
 export default async function PostsPage() {
   const firstData = await client.get({
     endpoint: "posts",
-    queries: { limit: 100 },
+    queries: { limit: POSTS_FETCH_LIMIT },
   });
 
   let posts: Post[] = firstData.contents;
   const totalCount: number = firstData.totalCount;
 
-  if (totalCount > 100) {
-    const remainingPages = Math.ceil((totalCount - 100) / 100);
+  if (totalCount > POSTS_FETCH_LIMIT) {
+    const remainingPages = Math.ceil((totalCount - POSTS_FETCH_LIMIT) / POSTS_FETCH_LIMIT);
 
     const additionalRequests = Array.from({ length: remainingPages }, (_, i) =>
       client.get({
         endpoint: "posts",
-        queries: { limit: 100, offset: (i + 1) * 100 },
+        queries: { limit: POSTS_FETCH_LIMIT, offset: (i + 1) * POSTS_FETCH_LIMIT },
       })
     );
 

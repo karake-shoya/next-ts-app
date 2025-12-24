@@ -1,10 +1,10 @@
-import LikeButton from "../../components/LikeButton";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { client } from "@/libs/client";
-import { Post } from "../../types";
 import { formatDate } from "@/libs/utils";
-import { ArrowLeftIcon, XIcon, ShareIcon } from "../../components/icons";
+import { Post } from "@/app/types";
+import LikeButton from "@/app/components/LikeButton";
+import { ArrowLeftIcon, XIcon, ShareIcon } from "@/app/components/icons";
 
 export const revalidate = false;
 

@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { client } from "@/libs/client";
-import { Post } from "./types";
-import PostCard from "./components/PostCard";
+import { POSTS_PER_PAGE } from "@/libs/constants";
+import { Post } from "@/app/types";
+import PostCard from "@/app/components/PostCard";
 
 export const revalidate = false;
 
 export default async function Home() {
   const data = await client.get({
     endpoint: "posts",
-    queries: { limit: 13 },
+    queries: { limit: POSTS_PER_PAGE + 1 },
   });
   const posts: Post[] = data.contents;
   const totalCount: number = data.totalCount;
@@ -54,13 +55,13 @@ export default async function Home() {
 
         {/* Posts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.slice(0, 12).map((post, index) => (
+          {posts.slice(0, POSTS_PER_PAGE).map((post, index) => (
             <PostCard key={post.id} post={post} index={index} />
           ))}
         </div>
 
         {/* View All Link */}
-        {totalCount > 12 && (
+        {totalCount > POSTS_PER_PAGE && (
           <div className="text-center mt-12">
             <Link href="/posts" className="glass glass-hover px-8 py-3 rounded-full text-sm font-medium text-foreground transition-all duration-300 hover:scale-105">
               すべての記事を見る
