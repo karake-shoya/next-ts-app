@@ -5,10 +5,29 @@ import { Post } from "../types";
 export const revalidate = false;
 
 export default async function PostsPage() {
-  const data = await client.get({
+  const firstData = await client.get({
     endpoint: "posts",
+    queries: { limit: 100 },
   });
-  const posts: Post[] = data.contents;
+
+  let posts: Post[] = firstData.contents;
+  const totalCount: number = firstData.totalCount;
+
+  if (totalCount > 100) {
+    const remainingPages = Math.ceil((totalCount - 100) / 100);
+
+    const additionalRequests = Array.from({ length: remainingPages }, (_, i) =>
+      client.get({
+        endpoint: "posts",
+        queries: { limit: 100, offset: (i + 1) * 100 },
+      })
+    );
+
+    const additionalData = await Promise.all(additionalRequests);
+    additionalData.forEach((data) => {
+      posts = [...posts, ...data.contents];
+    });
+  }
 
   return (
     <main className="min-h-screen px-6 py-12">
@@ -23,7 +42,7 @@ export default async function PostsPage() {
             <span className="gradient-text">すべての記事</span>
           </h1>
           <p className="text-text-muted">
-            全 <span className="text-accent-primary font-bold">{posts.length}</span> 件の記事
+            全 <span className="text-accent-primary font-bold">{totalCount}</span> 件の記事
           </p>
         </section>
 

@@ -7,8 +7,10 @@ export const revalidate = false;
 export default async function Home() {
   const data = await client.get({
     endpoint: "posts",
+    queries: { limit: 13 },
   });
   const posts: Post[] = data.contents;
+  const totalCount: number = data.totalCount;
 
   return (
     <main className="min-h-screen px-6 py-12">
@@ -32,7 +34,7 @@ export default async function Home() {
         {/* Stats */}
         <section className="grid grid-cols-3 gap-4 max-w-md mx-auto mb-16 animate-fade-in-up stagger-1" style={{ opacity: 0 }}>
           {[
-            { value: posts.length, label: "記事" },
+            { value: totalCount, label: "記事" },
             { value: "10+", label: "技術" },
             { value: "∞", label: "学び" },
           ].map((stat, i) => (
@@ -99,11 +101,11 @@ export default async function Home() {
         </div>
 
         {/* View All Link */}
-        {posts.length > 12 && (
+        {totalCount > 12 && (
           <div className="text-center mt-12">
-            <button className="glass glass-hover px-8 py-3 rounded-full text-sm font-medium text-foreground transition-all duration-300 hover:scale-105">
+            <Link href="/posts" className="glass glass-hover px-8 py-3 rounded-full text-sm font-medium text-foreground transition-all duration-300 hover:scale-105">
               すべての記事を見る
-            </button>
+            </Link>
           </div>
         )}
       </div>
