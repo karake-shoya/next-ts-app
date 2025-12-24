@@ -2,6 +2,7 @@ import Link from "next/link";
 import { formatDate } from "@/libs/utils";
 import { Post } from "@/app/types";
 import { ArrowRightIcon } from "@/app/components/icons";
+import { stripMarkdown } from "@/libs/utils";
 
 type Props = {
   post: Post;
@@ -35,7 +36,7 @@ export default function PostCard({ post, index }: Props) {
 
         {/* Excerpt */}
         <p className="text-sm text-text-muted line-clamp-3 mb-4 flex-grow leading-relaxed">
-          {post.body}
+          {stripMarkdown(post.body)}
         </p>
 
         {/* Read More */}

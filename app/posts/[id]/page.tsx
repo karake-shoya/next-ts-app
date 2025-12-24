@@ -5,6 +5,9 @@ import { formatDate } from "@/libs/utils";
 import { Post } from "@/app/types";
 import LikeButton from "@/app/components/LikeButton";
 import { ArrowLeftIcon, XIcon, ShareIcon } from "@/app/components/icons";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 export const revalidate = false;
 
@@ -82,9 +85,28 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
             </h1>
 
             <div className="prose prose-invert max-w-none">
-              <div className="text-text-muted text-lg leading-loose whitespace-pre-wrap border-l-2 border-accent-primary/30 pl-6">
+              <ReactMarkdown
+                components={{
+                  code({ className, children, ...props}) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return match ? (
+                      <SyntaxHighlighter
+                        style={vscDarkPlus}
+                        language={match[1]}
+                        PreTag="div"
+                      >
+                        {String(children).replace(/\n$/, '')}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
                 {post.body}
-              </div>
+              </ReactMarkdown>
             </div>
 
             {/* Actions */}
