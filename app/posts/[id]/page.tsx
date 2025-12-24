@@ -4,6 +4,8 @@ import Link from "next/link";
 import { client } from "@/libs/client";
 import { Post } from "../../types";
 
+export const revalidate = false;
+
 export default async function PostDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const post = await client.get<Post>({

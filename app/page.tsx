@@ -2,6 +2,8 @@ import Link from "next/link";
 import { client } from "@/libs/client";
 import { Post } from "./types";
 
+export const revalidate = false;
+
 export default async function Home() {
   const data = await client.get({
     endpoint: "posts",
