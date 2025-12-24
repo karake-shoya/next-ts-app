@@ -11,11 +11,19 @@ import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 export const revalidate = false;
 
-export default async function PostDetail({ params }: { params: Promise<{ id: string }> }) {
+export default async function PostDetail({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ draftKey?: string }>;
+}) {
   const { id } = await params;
+  const { draftKey } = await searchParams;
   const post = await client.get<Post>({
     endpoint: "posts",
     contentId: id,
+    queries: draftKey ? { draftKey } : undefined,
   }).catch(() => null);
 
   if (!post) {
