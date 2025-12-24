@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { client } from "@/libs/client";
+import { formatDate } from "@/libs/utils";
 import { Post } from "../types";
 
 export const revalidate = false;
@@ -64,7 +65,7 @@ export default async function PostsPage() {
                     Tech
                   </span>
                   <span className="text-xs text-text-muted">
-                    {post.publishedAt}
+                    {formatDate(post.publishedAt || "")}
                   </span>
                 </div>
 

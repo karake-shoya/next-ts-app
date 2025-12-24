@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { client } from "@/libs/client";
 import { Post } from "../../types";
+import { formatDate } from "@/libs/utils";
 
 export const revalidate = false;
 
@@ -73,7 +74,7 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
                     Article
                   </span>
                   <span className="text-sm text-white/80">
-                    {post.publishedAt}
+                    {formatDate(post.publishedAt || "")}
                   </span>
                 </div>
               </div>
