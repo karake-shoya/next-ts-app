@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
-import { GitHubIcon } from "./components/icons";
+import SocialLinks from "./components/SocialLinks";
 
 const notoSans = Noto_Sans_JP({
   variable: "--font-noto-sans",
@@ -36,16 +36,7 @@ export default function RootLayout({
               <p className="text-text-muted text-sm">
                 © 2025 U-Tech Blog. All rights reserved.
               </p>
-              <div className="flex items-center gap-6">
-                <a href="https://github.com/karake-shoya" target="_blank" rel="noopener noreferrer" 
-                   className="text-text-muted hover:text-accent-primary transition-colors duration-300">
-                  <GitHubIcon className="w-5 h-5" />
-                </a>
-                <a href="https://qiita.com/shoya_u" target="_blank" rel="noopener noreferrer"
-                   className="text-text-muted hover:text-accent-secondary transition-colors duration-300">
-                  <img src="/qiita-icon.png" alt="Qiita" width={20} height={20} className="opacity-60 hover:opacity-100 transition-opacity" />
-                </a>
-              </div>
+              <SocialLinks size="sm" variant="simple" />
             </div>
           </div>
         </footer>

@@ -1,4 +1,4 @@
-import { GitHubIcon } from "../components/icons";
+import SocialLinks from "../components/SocialLinks";
 
 export default function About() {
   const skills = [
@@ -117,24 +117,11 @@ export default function About() {
               <p className="text-text-muted mb-6">Frontend Developer / Tech Enthusiast</p>
               
               {/* Social Links */}
-              <div className="flex items-center justify-center md:justify-start gap-4">
-                <a 
-                  href="https://github.com/karake-shoya" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="glass glass-hover p-3 rounded-xl transition-all duration-300 hover:text-foreground hover:scale-110 text-text-muted"
-                >
-                  <GitHubIcon className="w-6 h-6" />
-                </a>
-                <a 
-                  href="https://qiita.com/shoya_u" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="glass glass-hover p-3 rounded-xl transition-all duration-300 hover:scale-110"
-                >
-                  <img src="/qiita-icon.png" alt="Qiita" width={24} height={24} className="opacity-60 hover:opacity-100 transition-opacity" />
-                </a>
-              </div>
+              <SocialLinks
+                size="md"
+                variant="glass"
+                className="justify-center md:justify-start"
+              />
             </div>
           </div>
         </section>
