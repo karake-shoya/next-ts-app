@@ -27,7 +27,7 @@ export default function LikeButton() {
         relative group px-6 py-3 rounded-xl font-medium text-sm
         transition-all duration-300 overflow-hidden
         ${isLiked
-          ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/25"
+          ? "bg-linear-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/25"
           : "glass glass-hover text-foreground"
         }
         ${isAnimating ? "scale-110" : "scale-100"}

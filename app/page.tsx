@@ -50,7 +50,7 @@ export default async function Home() {
         {/* Section Header */}
         <div className="flex items-center gap-4 mb-8 animate-fade-in-up stagger-2" style={{ opacity: 0 }}>
           <h2 className="text-2xl font-bold text-foreground">新着記事</h2>
-          <div className="flex-1 h-px bg-gradient-to-r from-accent-primary/50 to-transparent" />
+          <div className="flex-1 h-px bg-linear-to-r from-accent-primary/50 to-transparent" />
         </div>
 
         {/* Posts Grid */}

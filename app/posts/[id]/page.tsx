@@ -62,7 +62,7 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
         <article className="glass rounded-3xl overflow-hidden animate-fade-in-up">
           {/* Header Gradient */}
           <div className="relative h-48 md:h-64 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-accent-primary via-accent-secondary to-accent-tertiary opacity-80" />
+            <div className="absolute inset-0 bg-linear-to-br from-accent-primary via-accent-secondary to-accent-tertiary opacity-80" />
             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
             <div className="absolute inset-0 flex items-end p-8 md:p-12">
               <div>

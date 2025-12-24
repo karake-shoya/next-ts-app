@@ -27,7 +27,7 @@ export default function About() {
         {/* About Content */}
         <section className="glass rounded-3xl p-8 md:p-12 mb-8 animate-fade-in-up stagger-1" style={{ opacity: 0 }}>
           <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center text-white text-sm">
+            <span className="w-8 h-8 rounded-lg bg-linear-to-br from-accent-primary to-accent-secondary flex items-center justify-center text-white text-sm">
               📝
             </span>
             このブログについて
@@ -47,7 +47,7 @@ export default function About() {
         {/* Tech Stack */}
         <section className="glass rounded-3xl p-8 md:p-12 mb-8 animate-fade-in-up stagger-2" style={{ opacity: 0 }}>
           <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-secondary to-accent-tertiary flex items-center justify-center text-white text-sm">
+            <span className="w-8 h-8 rounded-lg bg-linear-to-br from-accent-secondary to-accent-tertiary flex items-center justify-center text-white text-sm">
               ⚡
             </span>
             技術スタック
@@ -61,7 +61,7 @@ export default function About() {
                 </div>
                 <div className="h-2 rounded-full bg-white/5 overflow-hidden">
                   <div 
-                    className={`h-full rounded-full bg-gradient-to-r ${skill.color} transition-all duration-1000 ease-out`}
+                    className={`h-full rounded-full bg-linear-to-br ${skill.color} transition-all duration-1000 ease-out`}
                     style={{ 
                       width: `${skill.level}%`,
                       animationDelay: `${index * 0.1}s`
@@ -76,7 +76,7 @@ export default function About() {
         {/* Goals */}
         <section className="glass rounded-3xl p-8 md:p-12 mb-8 animate-fade-in-up stagger-3" style={{ opacity: 0 }}>
           <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-tertiary to-accent-primary flex items-center justify-center text-white text-sm">
+            <span className="w-8 h-8 rounded-lg bg-linear-to-br from-accent-tertiary to-accent-primary flex items-center justify-center text-white text-sm">
               🎯
             </span>
             目標
@@ -92,7 +92,7 @@ export default function About() {
         {/* Author */}
         <section className="glass rounded-3xl p-8 md:p-12 animate-fade-in-up stagger-4" style={{ opacity: 0 }}>
           <h2 className="text-2xl font-bold text-foreground mb-8 flex items-center gap-3">
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center text-white text-sm">
+            <span className="w-8 h-8 rounded-lg bg-linear-to-br from-accent-primary to-accent-secondary flex items-center justify-center text-white text-sm">
               👤
             </span>
             Author
@@ -101,7 +101,7 @@ export default function About() {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
             {/* Avatar */}
             <div className="relative">
-              <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-accent-primary via-accent-secondary to-accent-tertiary p-[2px]">
+              <div className="w-32 h-32 rounded-2xl bg-linear-to-br from-accent-primary via-accent-secondary to-accent-tertiary p-[2px]">
                 <div className="w-full h-full rounded-2xl bg-background flex items-center justify-center">
                   <span className="text-5xl">🧑‍💻</span>
                 </div>

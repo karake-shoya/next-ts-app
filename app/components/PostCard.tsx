@@ -35,7 +35,7 @@ export default function PostCard({ post, index }: Props) {
         </h3>
 
         {/* Excerpt */}
-        <p className="text-sm text-text-muted line-clamp-3 mb-4 flex-grow leading-relaxed">
+        <p className="text-sm text-text-muted line-clamp-3 mb-4 grow leading-relaxed">
           {stripMarkdown(post.body)}
         </p>
 
