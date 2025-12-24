@@ -1,23 +1,43 @@
-import { posts } from "../../blogData";
 import LikeButton from "../../components/LikeButton";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-
-function getPost(id: string) {
-  return posts.find((post) => post.id === id);
-}
+import { client } from "@/libs/client";
+import { Post } from "../../types";
 
 export default async function PostDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const post = getPost(id);
+  const post = await client.get<Post>({
+    endpoint: "posts",
+    contentId: id,
+  }).catch(() => null);
 
   if (!post) {
     notFound();
   }
 
-  const currentIndex = posts.findIndex((p) => p.id === id);
-  const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
-  const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+  const [prevData, nextData] = await Promise.all([
+    client.get<{ contents: Post[] }>({
+      endpoint: "posts",
+      queries: {
+        filters: `publishedAt[greater_than]${post.publishedAt}`,
+        orders: "publishedAt",
+        limit: 1,
+        fields: "id, title, publishedAt",
+      },
+    }),
+    client.get<{ contents: Post[] }>({
+      endpoint: "posts",
+      queries: {
+        filters: `publishedAt[less_than]${post.publishedAt}`,
+        orders: "-publishedAt",
+        limit: 1,
+        fields: "id, title, publishedAt",
+      },
+    }),
+  ]);
+
+  const prevPost = prevData.contents[0] || null;
+  const nextPost = nextData.contents[0] || null;
 
   return (
     <main className="min-h-screen px-6 py-12">
@@ -51,7 +71,7 @@ export default async function PostDetail({ params }: { params: Promise<{ id: str
                     Article
                   </span>
                   <span className="text-sm text-white/80">
-                    {post.date}
+                    {post.publishedAt}
                   </span>
                 </div>
               </div>

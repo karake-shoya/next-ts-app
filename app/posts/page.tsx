@@ -1,7 +1,13 @@
 import Link from "next/link";
-import { posts } from "../blogData";
+import { client } from "@/libs/client";
+import { Post } from "../types";
 
-export default function PostsPage() {
+export default async function PostsPage() {
+  const data = await client.get({
+    endpoint: "posts",
+  });
+  const posts: Post[] = data.contents;
+
   return (
     <main className="min-h-screen px-6 py-12">
       <div className="max-w-6xl mx-auto">
@@ -37,7 +43,7 @@ export default function PostsPage() {
                     Tech
                   </span>
                   <span className="text-xs text-text-muted">
-                    {post.date}
+                    {post.publishedAt}
                   </span>
                 </div>
 

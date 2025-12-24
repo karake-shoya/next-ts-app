@@ -1,7 +1,13 @@
 import Link from "next/link";
-import { posts } from "./blogData";
+import { client } from "@/libs/client";
+import { Post } from "./types";
 
 export default async function Home() {
+  const data = await client.get({
+    endpoint: "posts",
+  });
+  const posts: Post[] = data.contents;
+
   return (
     <main className="min-h-screen px-6 py-12">
       <div className="max-w-6xl mx-auto">
@@ -59,7 +65,7 @@ export default async function Home() {
                     Tech
                   </span>
                   <span className="text-xs text-text-muted">
-                    {post.date}
+                    {post.publishedAt}
                   </span>
                 </div>
 
@@ -93,12 +99,9 @@ export default async function Home() {
         {/* View All Link */}
         {posts.length > 12 && (
           <div className="text-center mt-12">
-            <Link 
-              href="/posts"
-              className="inline-block glass glass-hover px-8 py-3 rounded-full text-sm font-medium text-foreground transition-all duration-300 hover:scale-105"
-            >
-              すべての記事を見る →
-            </Link>
+            <button className="glass glass-hover px-8 py-3 rounded-full text-sm font-medium text-foreground transition-all duration-300 hover:scale-105">
+              すべての記事を見る
+            </button>
           </div>
         )}
       </div>
