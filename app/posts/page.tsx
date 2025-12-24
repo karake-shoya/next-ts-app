@@ -2,6 +2,7 @@ import Link from "next/link";
 import { client } from "@/libs/client";
 import { Post } from "../types";
 import PostCard from "../components/PostCard";
+import { ArrowLeftIcon } from "../components/icons";
 
 export const revalidate = false;
 
@@ -60,14 +61,7 @@ export default async function PostsPage() {
             href="/"
             className="inline-flex items-center gap-2 glass glass-hover px-6 py-3 rounded-full text-sm font-medium text-text-muted hover:text-foreground transition-all duration-300"
           >
-            <svg 
-              className="w-4 h-4" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-            </svg>
+            <ArrowLeftIcon />
             ホームに戻る
           </Link>
         </div>

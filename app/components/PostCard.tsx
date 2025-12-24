@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatDate } from "@/libs/utils";
 import { Post } from "../types";
+import { ArrowRightIcon } from "./icons";
 
 type Props = {
   post: Post;
@@ -40,19 +41,7 @@ export default function PostCard({ post, index }: Props) {
         {/* Read More */}
         <div className="flex items-center gap-2 text-sm font-medium text-accent-primary group-hover:gap-3 transition-all duration-300">
           <span>続きを読む</span>
-          <svg
-            className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
+          <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
         </div>
       </article>
     </Link>
