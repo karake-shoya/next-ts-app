@@ -1,33 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 概要
 
-## UI/UX 改修内容
+Next.js App Router + TypeScript で構成したテックブログです。MicroCMS が有効な場合は
+CMSのコンテンツを取得し、未設定の場合はモックデータでUIを確認できます。ブログとして
+必要な導線・記事検索・タグ回遊・記事詳細の目次を一式揃えています。
 
-- 共通レイアウトを刷新（ヘッダー/フッター/最大幅/余白/タイポグラフィ）  
-- HomeにHero・Featured・Latest・Tags導線を追加  
-- Posts一覧に検索 + ページネーション付きカードUIを追加  
-- 記事詳細に目次・タグ表示・関連記事を追加  
-- Aboutをポートフォリオ用途で整理し、強み/実績/導線を明確化  
+## 主な機能
 
-## 仮定（データ構造）
+- Home: Hero / Featured / Latest / 人気タグの導線
+- Posts: タイトル・タグ検索 + ページネーション付き一覧
+- Tags: タグ一覧とタグ別記事ページ
+- Post Detail: タグ表示 / 目次 / Markdown + シンタックスハイライト / 関連記事 / 前後記事
+- About / Contact / Terms / Privacy の静的ページ
+- MicroCMS Preview / Revalidate 用のAPIルート
 
-- 記事データに `tags`（文字列配列または `{ name }` 形式）と `category` が含まれる前提で表示  
-- 画像は `eyecatch.url` を参照（無い場合はプレースホルダ表示）  
-- 上記が存在しない場合でもUIが破綻しないようフォールバックを用意  
-- MicroCMSの環境変数が未設定の場合は `libs/posts.ts` のモックデータを利用  
+## データソース
 
-## shadcn/ui 導入手順（未導入の場合）
+- MicroCMS (`MICROCMS_SERVICE_DOMAIN`, `MICROCMS_API_KEY`) があればAPIを使用
+- 未設定の場合は `libs/posts.ts` のモックデータを利用
+- `tags` は文字列配列または `{ name }` 形式、`category` は文字列または `{ name }` を想定
+- `publishedAt` を基準に記事の前後関係を算出
 
-本プロジェクトはTailwind CSS v4を利用しています。shadcn/ui を採用する場合は、
-Tailwindの設定に合わせてUIコンポーネントを生成/調整してください。
+## 環境変数
 
-1. `npx shadcn@latest init` を実行  
-2. `app/globals.css` と `@theme` の色設定に合わせて `components.json` を調整  
-3. 必要なUI（Button, Card, Badge, Input など）を `npx shadcn@latest add <component>` で追加  
-4. 既存コンポーネントを段階的に差し替え  
+`.env.local` に以下を設定するとMicroCMS/プレビュー/再検証が有効になります。
 
-## Getting Started
+```bash
+MICROCMS_SERVICE_DOMAIN=your-service
+MICROCMS_API_KEY=your-api-key
+MICROCMS_PREVIEW_SECRET=your-preview-secret
+REVALIDATE_SECRET=your-revalidate-secret
+```
 
-First, run the development server:
+## 開発コマンド
+
+開発サーバーを起動:
 
 ```bash
 npm run dev
@@ -39,22 +45,35 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Lint:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 主要ディレクトリ
 
-## Learn More
+- `app/`: ルーティング・ページ・UIコンポーネント
+- `app/data/`: Home/About などの静的コピー
+- `libs/`: MicroCMS クライアント / 記事取得 / ユーティリティ
 
-To learn more about Next.js, take a look at the following resources:
+## 補足
+
+- 本プロジェクトは Tailwind CSS v4 を利用しています。
+- `@tailwindcss/typography` を使用して Markdown の表示を調整しています。
+
+---
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+### Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome.
 
-## Deploy on Vercel
+### Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
