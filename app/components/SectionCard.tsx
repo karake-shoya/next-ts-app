@@ -19,10 +19,12 @@ export default function SectionCard({
 }: SectionCardProps) {
   return (
     <section
-      className={`glass rounded-3xl p-8 md:p-12 ${animationClassName ?? ""} ${
+      className={`rounded-3xl border border-border/60 bg-card-bg p-8 md:p-12 ${
+        animationClassName ?? ""
+      } ${
         className ?? ""
       }`}
-      style={{ opacity: 0 }}
+      style={animationClassName ? { opacity: 0 } : undefined}
     >
       <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
         <span

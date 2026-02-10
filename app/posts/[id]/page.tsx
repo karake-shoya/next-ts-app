@@ -1,10 +1,18 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { client } from "@/libs/client";
 import { formatDate } from "@/libs/utils";
-import { Post } from "@/app/types";
+import {
+  getAdjacentPosts,
+  getAllPosts,
+  getPostById,
+  getPostTags,
+  getRelatedPosts,
+} from "@/libs/posts";
 import LikeButton from "@/app/components/LikeButton";
-import { ArrowLeftIcon, XIcon, ShareIcon } from "@/app/components/icons";
+import PostCard from "@/app/components/post-card";
+import Toc from "@/app/components/toc";
+import { ArrowLeftIcon, XIcon } from "@/app/components/icons";
+import { extractToc, slugifyHeading } from "@/libs/toc";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
@@ -20,82 +28,71 @@ export default async function PostDetail({
 }) {
   const { id } = await params;
   const { draftKey } = await searchParams;
-  const post = await client.get<Post>({
-    endpoint: "posts",
-    contentId: id,
-    queries: draftKey ? { draftKey } : undefined,
-  }).catch(() => null);
+  const post = await getPostById(id, draftKey);
 
   if (!post) {
     notFound();
   }
 
-  const [prevData, nextData] = await Promise.all([
-    client.get<{ contents: Post[] }>({
-      endpoint: "posts",
-      queries: {
-        filters: `publishedAt[greater_than]${post.publishedAt}`,
-        orders: "publishedAt",
-        limit: 1,
-        fields: "id, title, publishedAt",
-      },
-    }),
-    client.get<{ contents: Post[] }>({
-      endpoint: "posts",
-      queries: {
-        filters: `publishedAt[less_than]${post.publishedAt}`,
-        orders: "-publishedAt",
-        limit: 1,
-        fields: "id, title, publishedAt",
-      },
-    }),
-  ]);
+  const allPosts = await getAllPosts();
+  const tags = getPostTags(post);
+  const tocItems = extractToc(post.body);
+  const relatedPosts = getRelatedPosts(allPosts, post.id, 3);
 
-  const prevPost = prevData.contents[0] || null;
-  const nextPost = nextData.contents[0] || null;
+  const { prevPost, nextPost } = await getAdjacentPosts(post);
 
   return (
-    <main className="min-h-screen px-6 py-12">
-      <div className="max-w-4xl mx-auto">
-        {/* Back Link */}
-        <Link 
-          href="/" 
-          className="inline-flex items-center gap-2 text-text-muted hover:text-accent-primary transition-colors duration-300 mb-8 group"
+    <main className="min-h-screen px-4 py-12 sm:px-6">
+      <div className="mx-auto flex max-w-5xl flex-col gap-10">
+        <Link
+          href="/posts"
+          className="inline-flex items-center gap-2 text-sm text-text-muted hover:text-accent-primary"
         >
-          <ArrowLeftIcon className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
-          <span className="text-sm font-medium">記事一覧に戻る</span>
+          <ArrowLeftIcon className="h-4 w-4" />
+          記事一覧に戻る
         </Link>
 
-        {/* Article Card */}
-        <article className="glass rounded-3xl overflow-hidden animate-fade-in-up">
-          {/* Header Gradient */}
-          <div className="relative h-48 md:h-64 overflow-hidden">
-            <div className="absolute inset-0 bg-linear-to-br from-accent-primary via-accent-secondary to-accent-tertiary opacity-80" />
-            <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
-            <div className="absolute inset-0 flex items-end p-8 md:p-12">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="px-3 py-1 text-xs font-medium rounded-full bg-white/20 text-white backdrop-blur-sm">
-                    Article
-                  </span>
-                  <span className="text-sm text-white/80">
-                    {formatDate(post.publishedAt || "")}
-                  </span>
-                </div>
-              </div>
+        <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
+          <article className="rounded-3xl border border-border/60 bg-card-bg p-6 shadow-sm md:p-10">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-text-muted">
+              <span>{formatDate(post.publishedAt || "")}</span>
+              <span>•</span>
+              {tags.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/tags/${encodeURIComponent(tag)}`}
+                  className="rounded-full bg-accent-primary/10 px-2.5 py-0.5 text-accent-primary"
+                >
+                  {tag}
+                </Link>
+              ))}
             </div>
-          </div>
-
-          {/* Content */}
-          <div className="p-8 md:p-12">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-foreground mb-8 leading-tight">
+            <h1 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl">
               {post.title}
             </h1>
 
-            <div className="prose prose-invert max-w-none">
+            <div className="prose prose-slate prose-a:text-accent-primary prose-headings:scroll-mt-24 mt-8 max-w-none">
               <ReactMarkdown
                 components={{
-                  code({ className, children, ...props}) {
+                  h2({ children, ...props }) {
+                    const text = String(children);
+                    const id = slugifyHeading(text);
+                    return (
+                      <h2 id={id} {...props}>
+                        {children}
+                      </h2>
+                    );
+                  },
+                  h3({ children, ...props }) {
+                    const text = String(children);
+                    const id = slugifyHeading(text);
+                    return (
+                      <h3 id={id} {...props}>
+                        {children}
+                      </h3>
+                    );
+                  },
+                  code({ className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || "");
                     return match ? (
                       <SyntaxHighlighter
@@ -103,7 +100,7 @@ export default async function PostDetail({
                         language={match[1]}
                         PreTag="div"
                       >
-                        {String(children).replace(/\n$/, '')}
+                        {String(children).replace(/\n$/, "")}
                       </SyntaxHighlighter>
                     ) : (
                       <code className={className} {...props}>
@@ -117,49 +114,72 @@ export default async function PostDetail({
               </ReactMarkdown>
             </div>
 
-            {/* Actions */}
-            <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <LikeButton />
-              
-              <div className="flex items-center gap-4">
-                <span className="text-sm text-text-muted">Share:</span>
-                <button className="p-2 rounded-lg glass glass-hover transition-all duration-300 hover:text-accent-primary">
-                  <XIcon />
-                </button>
-                <button className="p-2 rounded-lg glass glass-hover transition-all duration-300 hover:text-accent-secondary">
-                  <ShareIcon />
-                </button>
+            <div className="mt-12 border-t border-border/60 pt-6">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <LikeButton />
+                <div className="flex items-center gap-3 text-sm text-text-muted">
+                  <span>Share</span>
+                  <button className="rounded-full border border-border/60 p-2 transition hover:text-foreground">
+                    <XIcon />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <div className="space-y-6">
+            <Toc items={tocItems} />
+            <div className="rounded-2xl border border-border/60 bg-card-bg p-5 text-sm">
+              <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                関連リンク
+              </p>
+              <div className="mt-3 space-y-2 text-text-muted">
+                <Link href="/about" className="block hover:text-foreground">
+                  運営者について
+                </Link>
+                <Link href="/contact" className="block hover:text-foreground">
+                  相談・依頼はこちら
+                </Link>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
-        {/* Navigation */}
-        <nav className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in-up stagger-2" style={{ opacity: 0 }}>
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold">関連記事</h2>
+            <Link href="/posts" className="text-sm text-accent-primary">
+              すべて見る →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {relatedPosts.map((related) => (
+              <PostCard key={related.id} post={related} />
+            ))}
+          </div>
+        </section>
+
+        <nav className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {prevPost ? (
-            <Link 
+            <Link
               href={`/posts/${prevPost.id}`}
-              className="glass glass-hover rounded-2xl p-6 group transition-all duration-300 hover:-translate-y-1"
+              className="rounded-2xl border border-border/60 bg-card-bg p-4 text-sm transition hover:-translate-y-1"
             >
-              <span className="text-xs text-text-muted mb-2 block">← 前の記事</span>
-              <span className="text-foreground font-medium line-clamp-1 group-hover:text-accent-primary transition-colors">
-                {prevPost.title}
-              </span>
+              <span className="text-xs text-text-muted">← 前の記事</span>
+              <p className="mt-2 font-medium">{prevPost.title}</p>
             </Link>
           ) : (
             <div />
           )}
-          {nextPost && (
-            <Link 
+          {nextPost ? (
+            <Link
               href={`/posts/${nextPost.id}`}
-              className="glass glass-hover rounded-2xl p-6 text-right group transition-all duration-300 hover:-translate-y-1"
+              className="rounded-2xl border border-border/60 bg-card-bg p-4 text-right text-sm transition hover:-translate-y-1"
             >
-              <span className="text-xs text-text-muted mb-2 block">次の記事 →</span>
-              <span className="text-foreground font-medium line-clamp-1 group-hover:text-accent-primary transition-colors">
-                {nextPost.title}
-              </span>
+              <span className="text-xs text-text-muted">次の記事 →</span>
+              <p className="mt-2 font-medium">{nextPost.title}</p>
             </Link>
-          )}
+          ) : null}
         </nav>
       </div>
     </main>

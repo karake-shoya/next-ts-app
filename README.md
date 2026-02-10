@@ -1,5 +1,44 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## UI/UX 改修内容
+
+- 共通レイアウトを刷新（ヘッダー/フッター/最大幅/余白/タイポグラフィ）  
+- HomeにHero・Featured・Latest・Tags導線を追加  
+- Posts一覧に検索 + ページネーション付きカードUIを追加  
+- 記事詳細に目次・タグ表示・関連記事を追加  
+- Aboutをポートフォリオ用途で整理し、強み/実績/導線を明確化  
+
+## 仮定（データ構造）
+
+- 記事データに `tags`（文字列配列または `{ name }` 形式）と `category` が含まれる前提で表示  
+- 画像は `eyecatch.url` を参照（無い場合はプレースホルダ表示）  
+- 上記が存在しない場合でもUIが破綻しないようフォールバックを用意  
+- MicroCMSの環境変数が未設定の場合は `libs/posts.ts` のモックデータを利用  
+
+## shadcn/ui 導入手順（未導入の場合）
+
+本プロジェクトはTailwind CSS v4を利用しています。shadcn/ui を採用する場合は、
+Tailwindの設定に合わせてUIコンポーネントを生成/調整してください。
+
+1. `npx shadcn@latest init` を実行  
+2. `app/globals.css` と `@theme` の色設定に合わせて `components.json` を調整  
+3. 必要なUI（Button, Card, Badge, Input など）を `npx shadcn@latest add <component>` で追加  
+4. 既存コンポーネントを段階的に差し替え  
+
+## 現在の全体構成（主要ディレクトリ）
+
+- `app/`：App Routerのページ/レイアウト/共通UI  
+  - `layout.tsx`：共通レイアウト（Header/Footer）  
+  - `page.tsx`：Home  
+  - `about/`, `posts/`, `tags/`, `contact/`, `privacy/`, `terms/`：各ページ  
+  - `components/`：UIコンポーネント（card, toc, searchなど）  
+  - `data/`：UI用コピー/サイト設定  
+  - `globals.css`：Tailwindと全体スタイル  
+- `libs/`：データ取得/ユーティリティ  
+  - `client.ts`：MicroCMSクライアント  
+  - `posts.ts`：記事取得/タグ/関連記事ロジック  
+  - `toc.ts`：目次抽出  
+
 ## Getting Started
 
 First, run the development server:

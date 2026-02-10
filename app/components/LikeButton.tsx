@@ -24,11 +24,11 @@ export default function LikeButton() {
     <button
       onClick={handleClick}
       className={`
-        relative group px-6 py-3 rounded-xl font-medium text-sm
-        transition-all duration-300 overflow-hidden
+        relative group rounded-full border border-border/70 px-5 py-2 text-sm font-medium
+        transition-all duration-300
         ${isLiked
-          ? "bg-linear-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/25"
-          : "glass glass-hover text-foreground"
+          ? "border-transparent bg-accent-primary text-white shadow-md shadow-accent-primary/30"
+          : "bg-card-bg text-foreground"
         }
         ${isAnimating ? "scale-110" : "scale-100"}
         hover:scale-105 active:scale-95
