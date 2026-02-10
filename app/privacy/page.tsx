@@ -1,19 +1,17 @@
+import Link from "next/link";
 import SectionCard from "@/app/components/SectionCard";
 import { siteInfo } from "@/app/data/site";
 
 export default function PrivacyPolicy() {
   return (
-    <main className="min-h-screen px-6 py-12">
-      <div className="max-w-4xl mx-auto">
-        <section className="text-center mb-16 animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-text-muted mb-6">
-            <span className="w-2 h-2 rounded-full bg-accent-tertiary animate-pulse" />
+    <main className="min-h-screen px-4 py-12 sm:px-6">
+      <div className="mx-auto flex max-w-5xl flex-col gap-10">
+        <section className="space-y-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
             Privacy Policy
-          </div>
-          <h1 className="text-4xl md:text-5xl font-black mb-6">
-            <span className="gradient-text">プライバシーポリシー</span>
-          </h1>
-          <p className="text-text-muted text-lg max-w-2xl mx-auto leading-relaxed">
+          </p>
+          <h1 className="text-3xl font-semibold md:text-4xl">プライバシーポリシー</h1>
+          <p className="max-w-2xl text-base text-text-muted leading-relaxed">
             {siteInfo.name}（以下「当サイト」）における個人情報の取り扱いについて
             以下のとおり定めます。
           </p>
@@ -80,15 +78,12 @@ export default function PrivacyPolicy() {
           </div>
         </SectionCard>
 
-        <SectionCard
-          title="お問い合わせ"
-          icon="✉️"
-          animationClassName="animate-fade-in-up stagger-5 mt-8"
-          iconClassName="from-accent-primary to-accent-secondary"
-        >
+        <SectionCard title="お問い合わせ" icon="✉️">
           <div className="space-y-2 text-text-muted leading-relaxed">
-            <p>プライバシーポリシーに関するお問い合わせは以下までご連絡ください。</p>
-            <p className="text-foreground font-semibold">{siteInfo.contactEmail}</p>
+            <p>プライバシーポリシーに関するお問い合わせは下記よりご連絡ください。</p>
+            <Link href="/contact" className="text-sm text-accent-primary">
+              お問い合わせページへ
+            </Link>
           </div>
         </SectionCard>
       </div>
