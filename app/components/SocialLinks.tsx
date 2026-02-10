@@ -1,4 +1,5 @@
-import { GitHubIcon } from "./icons";
+import { GitHubIcon, XIcon } from "./icons";
+import { socialLinks } from "@/app/data/site";
 
 type Props = {
   size?: "sm" | "md";
@@ -6,28 +7,12 @@ type Props = {
   className?: string;
 };
 
-const links = [
-  {
-    href: "https://github.com/karake-shoya",
-    label: "GitHub",
-    icon: GitHubIcon,
-    hoverColor: "hover:text-accent-primary",
-  },
-  {
-    href: "https://qiita.com/shoya_u",
-    label: "Qiita",
-    icon: null,
-    hoverColor: "hover:text-accent-secondary",
-  },
-];
-
 export default function SocialLinks({
   size = "sm",
   variant = "simple",
   className = "",
 }: Props) {
   const iconSize = size === "sm" ? "w-5 h-5" : "w-6 h-6";
-  const imgSize = size === "sm" ? 20 : 24;
   const gap = size === "sm" ? "gap-6" : "gap-4";
 
   const baseStyles = "transition-all duration-300";
@@ -38,28 +23,28 @@ export default function SocialLinks({
 
   return (
     <div className={`flex items-center ${gap} ${className}`}>
-      {links.map((link) => (
+      {socialLinks.map((link) => {
+        const Icon =
+          link.label === "GitHub"
+            ? GitHubIcon
+            : link.label === "X"
+              ? XIcon
+              : null;
+        return (
         <a
           key={link.href}
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className={`text-text-muted ${link.hoverColor} ${baseStyles} ${variantStyles}`}
+          className={`text-text-muted hover:text-foreground ${baseStyles} ${variantStyles}`}
         >
-          {link.icon ? (
-            <link.icon className={iconSize} />
+          {Icon ? (
+            <Icon className={iconSize} />
           ) : (
-            <img
-              src="/qiita-icon.png"
-              alt={link.label}
-              width={imgSize}
-              height={imgSize}
-              className="opacity-60 hover:opacity-100 transition-opacity"
-            />
+            <span className="text-xs font-semibold tracking-wide">{link.label}</span>
           )}
         </a>
-      ))}
+      )})}
     </div>
   );
 }
-

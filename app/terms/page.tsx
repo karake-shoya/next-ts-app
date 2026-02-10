@@ -3,17 +3,14 @@ import { siteInfo } from "@/app/data/site";
 
 export default function Terms() {
   return (
-    <main className="min-h-screen px-6 py-12">
-      <div className="max-w-4xl mx-auto">
-        <section className="text-center mb-16 animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-text-muted mb-6">
-            <span className="w-2 h-2 rounded-full bg-accent-secondary animate-pulse" />
+    <main className="min-h-screen px-4 py-12 sm:px-6">
+      <div className="mx-auto flex max-w-5xl flex-col gap-10">
+        <section className="space-y-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
             Terms of Service
-          </div>
-          <h1 className="text-4xl md:text-5xl font-black mb-6">
-            <span className="gradient-text">利用規約</span>
-          </h1>
-          <p className="text-text-muted text-lg max-w-2xl mx-auto leading-relaxed">
+          </p>
+          <h1 className="text-3xl font-semibold md:text-4xl">利用規約</h1>
+          <p className="max-w-2xl text-base text-text-muted leading-relaxed">
             当サイトのご利用にあたり、以下の利用規約に同意いただいたものとします。
           </p>
         </section>
