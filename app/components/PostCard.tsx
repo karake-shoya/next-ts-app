@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { formatDate } from "@/libs/utils";
+import { formatDate, stripMarkdown } from "@/libs/utils";
 import { Post } from "@/app/types";
 import { ArrowRightIcon } from "@/app/components/icons";
-import { stripMarkdown } from "@/libs/utils";
 
 type Props = {
   post: Post;
@@ -48,4 +47,3 @@ export default function PostCard({ post, index }: Props) {
     </Link>
   );
 }
-
