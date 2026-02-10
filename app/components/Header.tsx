@@ -2,23 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { navLinks, siteInfo } from "@/app/data/site";
 
 export default function Header() {
   const pathname = usePathname();
 
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-  ];
-
   return (
     <header className="sticky top-0 z-50 glass border-b border-white/5">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="text-xl font-bold gradient-text hover:opacity-80 transition-opacity"
         >
-          U-Tech Blog
+          {siteInfo.name}
         </Link>
         <nav className="flex items-center gap-1">
           {navLinks.map((link) => {
@@ -29,9 +25,10 @@ export default function Header() {
                 href={link.href}
                 className={`
                   relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300
-                  ${isActive 
-                    ? "text-accent-primary bg-accent-primary/10" 
-                    : "text-text-muted hover:text-foreground hover:bg-white/5"
+                  ${
+                    isActive
+                      ? "text-accent-primary bg-accent-primary/10"
+                      : "text-text-muted hover:text-foreground hover:bg-white/5"
                   }
                 `}
               >
